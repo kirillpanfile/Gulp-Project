@@ -1,21 +1,22 @@
 //This app can work in 2 mods : Development | Production
 
-
 //Main module
 import gulp from "gulp";
-
 //Importing path
 import { path } from "./gulp/config/path.js"
-import { reset } from "./gulp/tasks/reset.js"
-import { html } from "./gulp/tasks/html.js"
+//Importing global plugins
+import { plugins } from "./gulp/config/plugins.js"
 
 global.app = {
     path: path,
     gulp: gulp,
+    plugins: plugins,
 }
 
 //Importing task
 import { copy } from "./gulp/tasks/copy.js";
+import { reset } from "./gulp/tasks/reset.js"
+import { html } from "./gulp/tasks/html.js"
 
 
 //Watcher Function
