@@ -1,0 +1,12 @@
+.no-webp body {
+  background-image: url("../img/cover.jpg"); }
+
+body {
+  background: #000;
+}
+
+body span {
+  color: red;
+}
+
+.webp body { background-image: url(../img/cover.webp); }
