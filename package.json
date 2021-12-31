@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/kirillpanfile/Gulp-Project#readme",
   "devDependencies": {
+    "del": "^6.0.0",
     "gulp": "^4.0.2"
   }
 }
