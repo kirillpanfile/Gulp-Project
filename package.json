@@ -2,7 +2,8 @@
   "name": "gulp-project",
   "version": "1.0.0",
   "description": "A project for training Gulp.js",
-  "main": "index.js",
+  "main": "gulpfile.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/kirillpanfile/Gulp-Project/issues"
   },
-  "homepage": "https://github.com/kirillpanfile/Gulp-Project#readme"
+  "homepage": "https://github.com/kirillpanfile/Gulp-Project#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2"
+  }
 }
