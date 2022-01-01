@@ -7,7 +7,7 @@
 * Hard code guide is used
 * Checking the code for errors before committing 
 
-## :hammer_and_wrench: Установка
+## :hammer_and_wrench: Installing 
 * Install [NodeJS](https://nodejs.org/en/) *** 12th version *** (newer versions of NodeJS have problems installing some packages) and [Yarn](https://yarnpkg.com/en/docs/install)
 * Download the pack with [Git](https://git-scm.com/downloads): ```git clone https://github.com/kirillpanfile/Gulp-Project.git```
 * Install```gulp``` globaly: ```yarn global add gulp-cli```
