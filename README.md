@@ -1,5 +1,5 @@
 # Gulp-Enterprise
-
+```v 1.0.0```
 * Works with [BEM](https://bem.info/)
 * Implemented BEM structure
 * Using [SCSS](https://sass-lang.com/) preprocessor 
