@@ -35,14 +35,13 @@ function watcher() {
     gulp.watch(path.watch.scss, scss)
     gulp.watch(path.watch.js, js)
     gulp.watch(path.watch.images, images)
-    gulp.watch(path.watch.html, bem)
 }
 
 //fonts
 const fonts = gulp.series(otfToTtf, ttfToWoff, fontsStyle);
 
 //Main tasks
-const mainTasks = gulp.parallel(fonts, gulp.parallel(copy, html, scss, js, bem, images))
+const mainTasks = gulp.parallel(fonts, gulp.parallel(copy, html, scss, js, images))
 
 //Dev tasks || {reset, tasks, server, watcher}
 const dev = gulp.series(reset, mainTasks, gulp.parallel(watcher, server))
@@ -52,3 +51,4 @@ export { dev }
 export { build }
 
 gulp.task('default', dev);
+gulp.task('bem', bem);
