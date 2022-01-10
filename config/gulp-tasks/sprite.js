@@ -9,13 +9,35 @@ export const sprite = () => {
 		)
 		.pipe(svgSprite({
 			mode: {
-				stack: {
-					sprite: `../icons/icons.svg`,
-					// Создавать страницу с перечнем иконок
-					example: false
+				symbol: {
+					sprite: '../img/icons/icons.svg',
+					//example: true
 				}
 			},
-		}
-		))
-		.pipe(app.gulp.dest(`${app.path.build.images}`));
+			shape: {
+				id: {
+					separator: '',
+					generator: 'svg-'
+				},
+				transform: [
+					{
+						svgo: {
+							plugins: [
+								{ removeXMLNS: true },
+								{ convertPathData: false },
+								{ removeViewBox: false },
+							]
+						}
+					}
+				]
+			},
+			svg: {
+				rootAttributes: {
+					style: 'display: none;',
+					'aria-hidden': true
+				},
+				xmlDeclaration: false
+			}
+		}))
+		.pipe(app.gulp.dest(`${app.path.srcFolder}`));
 }

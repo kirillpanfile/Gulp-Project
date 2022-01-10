@@ -3,7 +3,7 @@ import * as nodePath from 'path';
 const rootFolder = nodePath.basename(nodePath.resolve());
 
 // Пути к папке с исходниками и папке с результатом
-const buildFolder = `./dist`; // Также можно использовать rootFolder
+const buildFolder = `./dist`;
 const srcFolder = `./src`;
 
 // Пути к папкам и файлам проекта

@@ -512,9 +512,15 @@ export function showMore() {
 			return hiddenHeight;
 		}
 		function getOriginalHeight(showMoreContent) {
+			let parentHidden;
 			let hiddenHeight = showMoreContent.offsetHeight;
 			showMoreContent.style.removeProperty('height');
+			if (showMoreContent.closest(`[hidden]`)) {
+				parentHidden = showMoreContent.closest(`[hidden]`);
+				parentHidden.hidden = false;
+			}
 			let originalHeight = showMoreContent.offsetHeight;
+			parentHidden ? parentHidden.hidden = true : null;
 			showMoreContent.style.height = `${hiddenHeight}px`;
 			return originalHeight;
 		}

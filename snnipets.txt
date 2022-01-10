@@ -172,10 +172,22 @@
 		"body": "height: rem($1);",
 		"description": "Добавляет height c переводом в REM"
 	},
+	"Margin bottom with REM": {
+		"scope": "scss",
+		"prefix": "mb",
+		"body": "margin-bottom: rem($1);",
+		"description": "Добавляет нижний отступ c переводом в REM"
+	},
+	"Margin top with REM": {
+		"scope": "scss",
+		"prefix": "mt",
+		"body": "margin-top: rem($1);",
+		"description": "Добавляет верхний отступ c переводом в REM"
+	},
 	"Margin bottom with EM": {
 		"scope": "scss",
 		"prefix": "mbe",
-		"body": "margin-bottom: math.div($1, $2) + em;",
+		"body": "margin-bottom: em($1, $2);",
 		"description": "Добавляет нижний отступ c переводом в EM"
 	},
 	"Margin Bottom not last-child": {
