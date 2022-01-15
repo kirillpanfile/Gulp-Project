@@ -9,9 +9,6 @@
 // Спойлер
 .spollers__item {
 	font-size: rem(20);
-	&:not(:last-child) {
-		margin-bottom: em(30, 20);
-	}
 }
 // Заголовок спойлера
 .spollers__title {

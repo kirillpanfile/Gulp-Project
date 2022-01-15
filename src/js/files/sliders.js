@@ -23,27 +23,8 @@ import "../../scss/base/swiper.scss";
 // Полный набор стилей из node_modules
 // import 'swiper/css';
 
-// Добавление классов слайдерам
-// swiper главному блоку, swiper-wrapper оболочке, swiper-slide для слайдов
-function bildSliders() {
-	//BildSlider
-	let sliders = document.querySelectorAll('[class*="__swiper"]:not(.swiper-wrapper)');
-	if (sliders) {
-		sliders.forEach(slider => {
-			slider.parentElement.classList.add('swiper');
-			slider.classList.add('swiper-wrapper');
-			for (const slide of slider.children) {
-				slide.classList.add('swiper-slide');
-			}
-		});
-	}
-}
 // Инициализация слайдеров
 function initSliders() {
-	// Добавление классов слайдера
-	// при необходимости отключить
-	bildSliders();
-
 	// Перечень слайдеров
 	if (document.querySelector('.swiper')) {
 		new Swiper('.swiper', {

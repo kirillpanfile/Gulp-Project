@@ -1,7 +1,5 @@
 // Подключение функционала "Чертогов Фрилансера"
 import { isMobile, getHash } from "../functions.js";
-// Импорт класса наблюдателя.
-import { ScrollWatcher } from "../../libs/watcher.js";
 // Модуль прокрутки к блоку
 import { gotoBlock } from "./gotoblock.js";
 // Переменная контроля добавления события window scroll.
@@ -74,7 +72,7 @@ export function pageNavigation() {
 export function headerScroll() {
 	addWindowScrollEvent = true;
 	const header = document.querySelector('header.header');
-	const headerShow = header.hasAttribute('data-scroll-show'); // Добавить
+	const headerShow = header.hasAttribute('data-scroll-show');
 	const headerShowTimer = header.dataset.scrollShow ? header.dataset.scrollShow : 500;
 	const startPoint = header.dataset.scroll ? header.dataset.scroll : 1;
 	let scrollDirection = 0;
@@ -179,4 +177,3 @@ setTimeout(() => {
 		});
 	}
 }, 0);
-
