@@ -1,13 +1,10 @@
 // Модуль попапов
 // (c) Фрилансер по жизни, Хмурый Кот
-// Документация по работе в шаблоне:
-// data-popup - Атрибут для кнопки, которая вызывает попап
-// data-close - Атрибут для кнопки, которая закрывает попап
-// data-youtube - Атрибут для кода youtube
+// Документация по работе в шаблоне: https://template.fls.guru/template-docs/funkcional-popup.html
 // Сниппет (HTML): pl
 
 // Подключение функционала "Чертогов Фрилансера"
-import { isMobile, bodyLockStatus, bodyLockToggle, FLS } from "../files/functions.js";
+import { isMobile, bodyLockStatus, bodyLock, bodyUnlock, bodyLockToggle, FLS } from "../files/functions.js";
 import { flsModules } from "../files/modules.js";
 
 // Класс Popup
@@ -22,8 +19,8 @@ class Popup {
 			// Для сторонних объектов
 			fixElementSelector: '[data-lp]', // Атрибут для элементов с левым паддингом (которые fixed)
 			// Для объекта попапа
-			youtubeAttribute: 'data-youtube', // Атрибут для кода youtube
-			youtubePlaceAttribute: 'data-youtube-place', // Атрибут для вставки ролика youtube
+			youtubeAttribute: 'data-popup-youtube', // Атрибут для кода youtube
+			youtubePlaceAttribute: 'data-popup-youtube-place', // Атрибут для вставки ролика youtube
 			setAutoplayYoutube: true,
 			// Изменение классов
 			classes: {
@@ -36,8 +33,6 @@ class Popup {
 			focusCatch: true, // Фокус внутри попапа зациклен
 			closeEsc: true, // Закрытие по ESC
 			bodyLock: true, // Блокировка скролла
-			bodyLockDelay: 500, // Задержка блокировки скролла
-
 			hashSettings: {
 				location: true, // Хэш в адресной строке
 				goHash: true, // Переход по наличию в адресной строке
@@ -49,6 +44,7 @@ class Popup {
 				afterClose: function () { },
 			},
 		}
+		this.youTubeCode;
 		this.isOpen = false;
 		// Текущее окно
 		this.targetOpen = {
@@ -102,6 +98,7 @@ class Popup {
 				...options?.on,
 			}
 		}
+		this.bodyLock = false;
 		this.options.init ? this.initPopups() : null
 	}
 	initPopups() {
@@ -118,6 +115,9 @@ class Popup {
 				this._dataValue = buttonOpen.getAttribute(this.options.attributeOpenButton) ?
 					buttonOpen.getAttribute(this.options.attributeOpenButton) :
 					'error';
+				this.youTubeCode = buttonOpen.getAttribute(this.options.youtubeAttribute) ?
+					buttonOpen.getAttribute(this.options.youtubeAttribute) :
+					null;
 				if (this._dataValue !== 'error') {
 					if (!this.isOpen) this.lastFocusEl = buttonOpen;
 					this.targetOpen.selector = `${this._dataValue}`;
@@ -159,91 +159,101 @@ class Popup {
 				} else {
 					this.close(this.targetOpen.selector);
 				}
-
 			}.bind(this))
 
 			window.addEventListener('load', function () {
 				if (window.location.hash) {
 					this._openToHash();
 				}
-
 			}.bind(this))
 		}
 	}
 	open(selectorValue) {
-		// Если ввести значение селектора (селектор настраивается в options)
-		if (selectorValue && typeof (selectorValue) === "string" && selectorValue.trim() !== "") {
-			this.targetOpen.selector = selectorValue;
-			this._selectorOpen = true;
-		}
-		if (this.isOpen) {
-			this._reopen = true;
-			this.close();
-		}
-		if (!this._selectorOpen) this.targetOpen.selector = this.lastClosed.selector;
-		if (!this._reopen) this.previousActiveElement = document.activeElement;
+		if (bodyLockStatus) {
+			// Если перед открытием попапа был режим lock
+			this.bodyLock = document.documentElement.classList.contains('lock') ? true : false;
 
-		this.targetOpen.element = document.querySelector(this.targetOpen.selector);
+			// Если ввести значение селектора (селектор настраивается в options)
+			if (selectorValue && typeof (selectorValue) === "string" && selectorValue.trim() !== "") {
+				this.targetOpen.selector = selectorValue;
+				this._selectorOpen = true;
+			}
+			if (this.isOpen) {
+				this._reopen = true;
+				this.close();
+			}
+			if (!this._selectorOpen) this.targetOpen.selector = this.lastClosed.selector;
+			if (!this._reopen) this.previousActiveElement = document.activeElement;
 
-		if (this.targetOpen.element) {
-			// YouTube
-			if (this.targetOpen.element.hasAttribute(this.options.youtubeAttribute)) {
-				const codeVideo = this.targetOpen.element.getAttribute(this.options.youtubeAttribute);
+			this.targetOpen.element = document.querySelector(this.targetOpen.selector);
 
-				const urlVideo = `https://www.youtube.com/embed/${codeVideo}?rel=0&showinfo=0&autoplay=1`
+			if (this.targetOpen.element) {
+				// YouTube
+				if (this.youTubeCode) {
+					const codeVideo = this.youTubeCode;
+					const urlVideo = `https://www.youtube.com/embed/${codeVideo}?rel=0&showinfo=0&autoplay=1`
+					const iframe = document.createElement('iframe');
+					iframe.setAttribute('allowfullscreen', '');
 
-				const iframe = document.createElement('iframe');
-				iframe.setAttribute('allowfullscreen', '');
+					const autoplay = this.options.setAutoplayYoutube ? 'autoplay;' : '';
+					iframe.setAttribute('allow', `${autoplay}; encrypted-media`);
 
-				const autoplay = this.options.setAutoplayYoutube ? 'autoplay;' : '';
-				iframe.setAttribute('allow', `${autoplay}; encrypted-media`);
+					iframe.setAttribute('src', urlVideo);
 
-				iframe.setAttribute('src', urlVideo);
-
-				if (this.targetOpen.element.querySelector(`[${this.options.youtubePlaceAttribute}]`))
+					if (!this.targetOpen.element.querySelector(`[${this.options.youtubePlaceAttribute}]`)) {
+						const youtubePlace = this.targetOpen.element.querySelector('.popup__text').setAttribute(`${this.options.youtubePlaceAttribute}`, '');
+					}
 					this.targetOpen.element.querySelector(`[${this.options.youtubePlaceAttribute}]`).appendChild(iframe);
-			}
-			if (this.options.hashSettings.location) {
-				// Получение хэша и его выставление 
-				this._getHash();
-				this._setHash();
-			}
-
-			// До открытия
-			this.options.on.beforeOpen(this);
-
-			this.targetOpen.element.classList.add(this.options.classes.popupActive);
-			document.body.classList.add(this.options.classes.bodyActive);
-
-			if (!this._reopen) bodyLockToggle();
-			else this._reopen = false;
-
-			this.targetOpen.element.setAttribute('aria-hidden', 'false');
-
-			// // Запоминаю это открытое окно. Оно будет последним открытым
-			this.previousOpen.selector = this.targetOpen.selector;
-			this.previousOpen.element = this.targetOpen.element;
-
-			this._selectorOpen = false;
-
-			this.isOpen = true;
-
-			setTimeout(() => {
-				this._focusTrap();
-			}, 50);
-
-			// После открытия
-			//this.options.on.afterOpen(this);
-
-			// Создаем свое событие после открытия попапа
-			document.dispatchEvent(new CustomEvent("afterPopupOpen", {
-				detail: {
-					popup: this
 				}
-			}));
-			this.popupLogging(`Открыл попап`);
+				if (this.options.hashSettings.location) {
+					// Получение хэша и его выставление 
+					this._getHash();
+					this._setHash();
+				}
 
-		} else this.popupLogging(`Ой ой, такого попапа нет. Проверьте корректность ввода. `);
+				// До открытия
+				this.options.on.beforeOpen(this);
+				// Создаем свое событие после открытия попапа
+				document.dispatchEvent(new CustomEvent("beforePopupOpen", {
+					detail: {
+						popup: this
+					}
+				}));
+
+				this.targetOpen.element.classList.add(this.options.classes.popupActive);
+				document.documentElement.classList.add(this.options.classes.bodyActive);
+
+				if (!this._reopen) {
+					!this.bodyLock ? bodyLock() : null;
+				}
+				else this._reopen = false;
+
+				this.targetOpen.element.setAttribute('aria-hidden', 'false');
+
+				// Запоминаю это открытое окно. Оно будет последним открытым
+				this.previousOpen.selector = this.targetOpen.selector;
+				this.previousOpen.element = this.targetOpen.element;
+
+				this._selectorOpen = false;
+
+				this.isOpen = true;
+
+				setTimeout(() => {
+					this._focusTrap();
+				}, 50);
+
+				// После открытия
+				this.options.on.afterOpen(this);
+				// Создаем свое событие после открытия попапа
+				document.dispatchEvent(new CustomEvent("afterPopupOpen", {
+					detail: {
+						popup: this
+					}
+				}));
+				this.popupLogging(`Открыл попап`);
+
+			} else this.popupLogging(`Ой ой, такого попапа нет.Проверьте корректность ввода. `);
+		}
 	}
 	close(selectorValue) {
 		if (selectorValue && typeof (selectorValue) === "string" && selectorValue.trim() !== "") {
@@ -254,8 +264,15 @@ class Popup {
 		}
 		// До закрытия
 		this.options.on.beforeClose(this);
+		// Создаем свое событие перед закрытием попапа
+		document.dispatchEvent(new CustomEvent("beforePopupClose", {
+			detail: {
+				popup: this
+			}
+		}));
+
 		// YouTube
-		if (this.targetOpen.element.hasAttribute(this.options.youtubeAttribute)) {
+		if (this.youTubeCode) {
 			if (this.targetOpen.element.querySelector(`[${this.options.youtubePlaceAttribute}]`))
 				this.targetOpen.element.querySelector(`[${this.options.youtubePlaceAttribute}]`).innerHTML = '';
 		}
@@ -263,8 +280,8 @@ class Popup {
 		// aria-hidden
 		this.previousOpen.element.setAttribute('aria-hidden', 'true');
 		if (!this._reopen) {
-			document.body.classList.remove(this.options.classes.bodyActive);
-			bodyLockToggle();
+			document.documentElement.classList.remove(this.options.classes.bodyActive);
+			!this.bodyLock ? bodyUnlock() : null;
 			this.isOpen = false;
 		}
 		// Очищение адресной строки
@@ -276,6 +293,13 @@ class Popup {
 		}
 		// После закрытия
 		this.options.on.afterClose(this);
+		// Создаем свое событие после закрытия попапа
+		document.dispatchEvent(new CustomEvent("afterPopupClose", {
+			detail: {
+				popup: this
+			}
+		}));
+
 		setTimeout(() => {
 			this._focusTrap();
 		}, 50);
@@ -294,10 +318,8 @@ class Popup {
 			document.querySelector(`${window.location.hash}`) ? `${window.location.hash}` :
 				null;
 
-		const buttons = document.querySelector(`[${this.options.attributeOpenButton}="${classInHash}"]`);
-		if (buttons) {
-			if (classInHash) this.open(classInHash)
-		}
+		const buttons = document.querySelector(`[${this.options.attributeOpenButton} = "${classInHash}"]`) ? document.querySelector(`[${this.options.attributeOpenButton} = "${classInHash}"]`) : document.querySelector(`[${this.options.attributeOpenButton} = "${classInHash.replace('.', "#")}"]`);
+		if (buttons && classInHash) this.open(classInHash);
 	}
 	// Утсановка хэша
 	_setHash() {

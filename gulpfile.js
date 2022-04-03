@@ -21,7 +21,7 @@ import { reset } from "./config/gulp-tasks/reset.js";
 import { html } from "./config/gulp-tasks/html.js";
 import { css } from "./config/gulp-tasks/css.js";
 import { js } from "./config/gulp-tasks/js.js";
-import { jsp } from "./config/gulp-tasks/js-p.js";
+import { jsDev } from "./config/gulp-tasks/js-dev.js";
 import { images } from "./config/gulp-tasks/images.js";
 import { ftp } from "./config/gulp-tasks/ftp.js";
 import { zip } from "./config/gulp-tasks/zip.js";
@@ -34,12 +34,13 @@ const fonts = gulp.series(reset, otfToTtf, ttfToWoff, fonstStyle);
 // Основные задачи будем выполнять параллельно после обработки шрифтов
 const devTasks = gulp.parallel(fonts, gitignore);
 // Основные задачи будем выполнять параллельно после обработки шрифтов
-const buildTasks = gulp.series(fonts, js, gulp.parallel(html, css, images, gitignore), jsp);
+const buildTasks = gulp.series(fonts, jsDev, js, gulp.parallel(html, css, images, gitignore));
 
 // Экспорт задач
 export { html }
 export { css }
 export { js }
+export { jsDev }
 export { images }
 export { fonts }
 export { sprite }

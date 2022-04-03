@@ -24,6 +24,9 @@ data-search - позволяет искать по выпадающему спи
 data-open - селект открыт сразу
 data-submit - отправляет форму при изменении селекта
 
+data-one-select - селекты внутри оболочки с атрибутом будут показываться только по одному
+data-pseudo-label - добавляет псевдоэлемент к заголовку селекта с указанным текстом
+
 Для плейсхолдера (Плейсхолдер - это option с value=""):
 data-label для плейсхолдера, добавляет label к селекту
 data-show для плейсхолдера, показывает его в списке (только для единичного выбора)
@@ -34,8 +37,6 @@ data-asset="путь к картинке или текст" - добавляет
 data-href="адрес ссылки" - добавляет ссылку в элемент списка
 data-href-blank - откроет ссылку в новом окне
 */
-
-
 
 /*
 // Возможные доработки:
@@ -74,6 +75,7 @@ class SelectConstructor {
 			classSelectMultiple: "_select-multiple", // Мультивыбор
 			classSelectCheckBox: "_select-checkbox", // Стиль чекбокса
 			classSelectOptionSelected: "_select-selected", // Выбранный пункт
+			classSelectPseudoLabel: "_select-pseudo-label", // Псевдолейбл
 		}
 		this._this = this;
 		// Запуск инициализации
@@ -137,11 +139,6 @@ class SelectConstructor {
 		// Присваиваем уникальный ID
 		index ? originalSelect.dataset.id = index : null;
 
-		// Конструктор косновных элементов
-		selectItem.insertAdjacentHTML('beforeend', `<div class="${this.selectClasses.classSelectBody}"><div hidden class="${this.selectClasses.classSelectOptions}"></div></div>`);
-		// Запускаем конструктор псевдоселекта
-		this.selectBuild(originalSelect);
-
 		// Работа с плейсхолдером
 		if (this.getSelectPlaceholder(originalSelect)) {
 			// Запоминаем плейсхолдер
@@ -152,6 +149,11 @@ class SelectConstructor {
 				selectItemTitle.insertAdjacentHTML('afterbegin', `<span class="${this.selectClasses.classSelectLabel}">${this.getSelectPlaceholder(originalSelect).label.text ? this.getSelectPlaceholder(originalSelect).label.text : this.getSelectPlaceholder(originalSelect).value}</span>`);
 			}
 		}
+		// Конструктор основных элементов
+		selectItem.insertAdjacentHTML('beforeend', `<div class="${this.selectClasses.classSelectBody}"><div hidden class="${this.selectClasses.classSelectOptions}"></div></div>`);
+		// Запускаем конструктор псевдоселекта
+		this.selectBuild(originalSelect);
+
 		// Запоминаем скорость
 		originalSelect.dataset.speed = originalSelect.dataset.speed ? originalSelect.dataset.speed : "150";
 		// Событие при изменении оригинального select
@@ -216,18 +218,36 @@ class SelectConstructor {
 		}
 	}
 	// Функция закрытия всех селектов
-	selectsСlose() {
-		const selectActiveItems = document.querySelectorAll(`${this.getSelectClass(this.selectClasses.classSelect)}${this.getSelectClass(this.selectClasses.classSelectOpen)}`);
+	selectsСlose(selectOneGroup) {
+		const selectsGroup = selectOneGroup ? selectOneGroup : document;
+		const selectActiveItems = selectsGroup.querySelectorAll(`${this.getSelectClass(this.selectClasses.classSelect)}${this.getSelectClass(this.selectClasses.classSelectOpen)}`);
 		if (selectActiveItems.length) {
 			selectActiveItems.forEach(selectActiveItem => {
-				this.selectAction(selectActiveItem);
+				this.selectСlose(selectActiveItem);
 			});
+		}
+	}
+	// Функция закрытия конкретного селекта
+	selectСlose(selectItem) {
+		const originalSelect = this.getSelectElement(selectItem).originalSelect;
+		const selectOptions = this.getSelectElement(selectItem, this.selectClasses.classSelectOptions).selectElement;
+		if (!selectOptions.classList.contains('_slide')) {
+			selectItem.classList.remove(this.selectClasses.classSelectOpen);
+			_slideUp(selectOptions, originalSelect.dataset.speed);
 		}
 	}
 	// Функция открытия/закрытия конкретного селекта
 	selectAction(selectItem) {
 		const originalSelect = this.getSelectElement(selectItem).originalSelect;
 		const selectOptions = this.getSelectElement(selectItem, this.selectClasses.classSelectOptions).selectElement;
+
+		// Если селекты помещенны в элемент с дата атрибутом data-one-select
+		// закрываем все открытые селекты
+		if (originalSelect.closest('[data-one-select]')) {
+			const selectOneGroup = originalSelect.closest('[data-one-select]');
+			this.selectsСlose(selectOneGroup);
+		}
+
 		if (!selectOptions.classList.contains('_slide')) {
 			selectItem.classList.toggle(this.selectClasses.classSelectOpen);
 			_slideToggle(selectOptions, originalSelect.dataset.speed);
@@ -255,19 +275,25 @@ class SelectConstructor {
 			}
 		}
 		// Значение(я) или плейсхолдер
-		selectTitleValue = selectTitleValue.length ? selectTitleValue : originalSelect.dataset.placeholder;
+		selectTitleValue = selectTitleValue.length ? selectTitleValue : (originalSelect.dataset.placeholder ? originalSelect.dataset.placeholder : '');
+		// Если включен режим pseudo
+		let pseudoAttribute = '';
+		let pseudoAttributeClass = '';
+		if (originalSelect.hasAttribute('data-pseudo-label')) {
+			pseudoAttribute = originalSelect.dataset.pseudoLabel ? ` data-pseudo-label="${originalSelect.dataset.pseudoLabel}"` : ` data-pseudo-label="Заполните атрибут"`;
+			pseudoAttributeClass = ` ${this.selectClasses.classSelectPseudoLabel}`;
+		}
 		// Если есть значение, добавляем класс
 		this.getSelectedOptionsData(originalSelect).values.length ? selectItem.classList.add(this.selectClasses.classSelectActive) : selectItem.classList.remove(this.selectClasses.classSelectActive);
 		// Возвращаем поле ввода для поиска или текст
 		if (originalSelect.hasAttribute('data-search')) {
 			// Выводим поле ввода для поиска
-
-			return `<div class="${this.selectClasses.classSelectTitle}"><span class="${this.selectClasses.classSelectValue}"><input autocomplete="off" type="text" placeholder="${selectTitleValue}" data-placeholder="${selectTitleValue}" class="${this.selectClasses.classSelectInput}"></span></div>`;
+			return `<div class="${this.selectClasses.classSelectTitle}"><span${pseudoAttribute} class="${this.selectClasses.classSelectValue}"><input autocomplete="off" type="text" placeholder="${selectTitleValue}" data-placeholder="${selectTitleValue}" class="${this.selectClasses.classSelectInput}"></span></div>`;
 		} else {
 			// Если выбран элемент со своим классом
 			const customClass = this.getSelectedOptionsData(originalSelect).elements.length && this.getSelectedOptionsData(originalSelect).elements[0].dataset.class ? ` ${this.getSelectedOptionsData(originalSelect).elements[0].dataset.class}` : '';
 			// Выводим текстовое значение
-			return `<button type="button" class="${this.selectClasses.classSelectTitle}"><span class="${this.selectClasses.classSelectValue}"><span class="${this.selectClasses.classSelectContent}${customClass}">${selectTitleValue}</span></span></button>`;
+			return `<button type="button" class="${this.selectClasses.classSelectTitle}"><span${pseudoAttribute} class="${this.selectClasses.classSelectValue}${pseudoAttributeClass}"><span class="${this.selectClasses.classSelectContent}${customClass}">${selectTitleValue}</span></span></button>`;
 		}
 	}
 	// Конструктор данных для значения заголовка
@@ -345,8 +371,8 @@ class SelectConstructor {
 	getOption(selectOption, originalSelect) {
 		// Если элемент выбран и включен режим мультивыбора, добавляем класс
 		const selectOptionSelected = selectOption.selected && originalSelect.multiple ? ` ${this.selectClasses.classSelectOptionSelected}` : '';
-		// Если элемент выбрани нет настройки data-show-selected, скрываем элемент
-		const selectOptionHide = selectOption.selected && !originalSelect.hasAttribute('data-show-selected') ? `hidden` : ``;
+		// Если элемент выбрани и нет настройки data-show-selected, скрываем элемент
+		const selectOptionHide = selectOption.selected && !originalSelect.hasAttribute('data-show-selected') && !originalSelect.multiple ? `hidden` : ``;
 		// Если для элемента указан класс добавляем
 		const selectOptionClass = selectOption.dataset.class ? ` ${selectOption.dataset.class}` : '';
 		// Если указан режим ссылки

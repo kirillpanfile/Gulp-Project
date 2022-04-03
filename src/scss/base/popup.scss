@@ -11,7 +11,7 @@ body::after {
 	pointer-events: none;
 	z-index: 149;
 }
-body.popup-show::after {
+.popup-show body::after {
 	opacity: 1;
 }
 .popup {

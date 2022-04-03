@@ -4,10 +4,9 @@
 	"description": "Start template with Gulp and Webpack",
 	"author": "FLS",
 	"private": true,
-	"license": "GNU General Public License (GPL)",
+	"license": "",
 	"type": "module",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "gulp && webpack serve --progress -c config/webpack.dev.js",
 		"build": "gulp build --build",
 		"sprite": "gulp sprite",
@@ -15,13 +14,15 @@
 		"deploy": "gulp deployFTP --build",
 		"zip": "gulp deployZIP --build",
 		"devbuild": "gulp build --build --nowebp",
-		"tmp": "gulp -f gulpfile.tmp.js"
+		"tmp": "gulp -f gulpfile.tmp.js",
+		"bem": "fls-bemtree-from-html"
 	},
 	"devDependencies": {
 		"copy-webpack-plugin": "latest",
 		"css-loader": "latest",
 		"del": "latest",
 		"file-include-webpack-plugin-replace": "latest",
+		"fls-bemtree-from-html": "^1.0.0",
 		"gulp": "latest",
 		"gulp-autoprefixer": "latest",
 		"gulp-clean-css": "latest",

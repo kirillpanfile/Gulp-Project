@@ -26,39 +26,58 @@ import "../../scss/base/swiper.scss";
 // Инициализация слайдеров
 function initSliders() {
 	// Перечень слайдеров
-	if (document.querySelector('.swiper')) {
-		new Swiper('.swiper', {
+	// Проверяем, есть ли слайдер на стронице
+	if (document.querySelector('.swiper')) { // Указываем скласс нужного слайдера
+		// Создаем слайдер
+		new Swiper('.swiper', { // Указываем скласс нужного слайдера
 			// Подключаем модули слайдера
 			// для конкретного случая
-			//modules: [Navigation, Pagination],
-			/*
-			effect: 'fade',
-			autoplay: {
-				delay: 3000,
-				disableOnInteraction: false,
-			},
-			*/
+			modules: [Navigation],
 			observer: true,
 			observeParents: true,
 			slidesPerView: 1,
 			spaceBetween: 0,
 			autoHeight: true,
 			speed: 800,
+
 			//touchRatio: 0,
 			//simulateTouch: false,
 			//loop: true,
 			//preloadImages: false,
 			//lazy: true,
-			// Dotts
-			//pagination: {
-			//	el: '.slider-quality__pagging',
-			//	clickable: true,
-			//},
-			// Arrows
-			navigation: {
-				nextEl: '.about__more .more__item_next',
-				prevEl: '.about__more .more__item_prev',
+
+			/*
+			// Эффекты
+			effect: 'fade',
+			autoplay: {
+				delay: 3000,
+				disableOnInteraction: false,
 			},
+			*/
+
+			// Пагинация
+			/*
+			pagination: {
+				el: '.swiper-pagination',
+				clickable: true,
+			},
+			*/
+
+			// Скроллбар
+			/*
+			scrollbar: {
+				el: '.swiper-scrollbar',
+				draggable: true,
+			},
+			*/
+
+			// Кнопки "влево/вправо"
+			navigation: {
+				prevEl: '.swiper-button-prev',
+				nextEl: '.swiper-button-next',
+			},
+
+			// Брейкпоинты
 			/*
 			breakpoints: {
 				320: {
@@ -80,6 +99,7 @@ function initSliders() {
 				},
 			},
 			*/
+			// События
 			on: {
 
 			}
