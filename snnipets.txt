@@ -6,6 +6,111 @@
 	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
 	// Placeholders with the same ids are connected.
 	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"For Loop": {
+		"scope": "javascript,typescript",
+		"prefix": [
+			"for",
+			"for-const"
+		],
+		"body": [
+			"for (const ${2:element} of ${1:array}) {",
+			"\t$0",
+			"}"
+		],
+		"description": "A for loop."
+	},
+	"Constant Creator": {
+		"scope": "javascript,typescript",
+		"prefix": [
+			"cst",
+			"c",
+			"cos",
+			"const"
+		],
+		"body": [
+			"const "
+		]
+	},
+	"fetch": {
+		"scope": "javascript,typescript",
+		"prefix": [
+			"fe"
+		],
+		"body": [
+			"async function fetchData() {",
+			"    // GET",
+			"    const response = await fetch(\"https://jsonplaceholder.typicode.com/posts\");",
+			"    console.log(response.json());",
+			"",
+			"    // POST",
+			"    let post = await fetch(\"https://jsonplaceholder.typicode.com/posts\", {",
+			"        method: \"POST\",",
+			"        headers: {",
+			"            \"Content-type\": \"application/json\"",
+			"        },",
+			"        body: JSON.stringify({ lockevn: 1 })",
+			"    });",
+			"}",
+			""
+		],
+		"description": "fetch"
+	},
+	"log": {
+		"scope": "javascript,typescript",
+		"prefix": "log",
+		"body": [
+			"console.log"
+		],
+		"description": "log"
+	},
+	"vue defalut": {
+		"prefix": "v",
+		"body": [
+			"<template>",
+			"    <div>",
+			"    ",
+			"  </div>",
+			"</template>",
+			"",
+			"<script>",
+			"export default {",
+			"",
+			"}",
+			"</script>",
+			"",
+			"<style>",
+			"",
+			"</style>"
+		],
+		"description": "vue defalut"
+	},
+	"getElementById": {
+		"scope": "javascript,typescript",
+		"prefix": "getid",
+		"body": [
+			"const ${1:el} = document.getElementById('${1:el}')"
+		],
+		"description": "getElementById"
+	},
+	"addEventListener": {
+		"scope": "javascript,typescript",
+		"prefix": "addevent",
+		"body": [
+			"$1.addEventListener(\"$2\",(callback) => {",
+			"  console.log(callback);",
+			"}); "
+		],
+		"description": "addEventListener"
+	},
 	"Rating": {
 		"scope": "html",
 		"prefix": "rating",
@@ -26,7 +131,7 @@
 		"scope": "html",
 		"prefix": "tabs",
 		"body": [
-			"<div data-tabs class=\"${1:tabs}\">\n\t<nav data-tabs-titles class=\"${1:tabs}__navigation\">\n\t\t<button type=\"button\" class=\"${1:tabs}__title _tab-active\">Таб №1</button>\n\t\t<button type=\"button\" class=\"${1:tabs}__title\">Таб №2</button>\n\t\t<button type=\"button\" class=\"${1:tabs}__title\">Таб №3</button>\n\t</nav>\n\t<div data-tabs-body class=\"${1:tabs}__content\">\n\t\t<div class=\"${1:tabs}__body\">\n\t\t\tСодержимое первого таба\n\t\t</div>\n\t\t<div class=\"${1:tabs}__body\">\n\t\t\tСодержимое второго таба\n\t\t</div>\n\t\t<div class=\"${1:tabs}__body\">\n\t\t\tСодержимое третьего таба\n\t\t</div>\n\t</div>\n</div>"
+			"<div data-tabs class=\"${1:tabs}\">\n\t<nav data-tabs-titles class=\"${1:tabs}__navigation\">\n\t\t<button type=\"button\" class=\"${1:tabs}__title _tab-active\">Таб №1</button>\n\t\t<button type=\"button\" class=\"${1:tabs}__title\">Таб №2</button>\n\t\t<button type=\"button\" class=\"${1:tabs}__title\">Таб №3</button>\n\t</nav>\n\t<div data-tabs-body class=\"${1:tabs}__content\">\n\t\t<div class=\"${1:tabs}__body\">\n\t\t\t1 Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore odio exercitationem, excepturi similique nulla, voluptatem reprehenderit neque a minima eaque tenetur? Quos fugit voluptate enim quo sed, minima error molestias!\n\t\t</div>\n\t\t<div class=\"${1:tabs}__body\">\n\t\t\t2 Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore odio exercitationem, excepturi similique nulla, voluptatem reprehenderit neque a minima eaque tenetur? Quos fugit voluptate enim quo sed, minima error molestias!\n\t\t</div>\n\t\t<div class=\"${1:tabs}__body\">\n\t\t\t3 Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore odio exercitationem, excepturi similique nulla, voluptatem reprehenderit neque a minima eaque tenetur? Quos fugit voluptate enim quo sed, minima error molestias!\n\t\t</div>\n\t</div>\n</div>"
 		],
 		"description": "Добавляет базовый HTML код табов"
 	},
@@ -42,15 +147,7 @@
 		"scope": "html",
 		"prefix": "swiper",
 		"body": [
-			"<div class=\"${1:имя-блока}__slider swiper\">\n\t<div class=\"${1:имя-блока}__wrapper swiper-wrapper\">\n\t\t<div class=\"${1:имя-блока}__slide swiper-slide\"></div>\n\t</div>\n</div>"
-		],
-		"description": "Добавляет базовый HTML код слайдера Swiper"
-	},
-	"Swiper Full": {
-		"scope": "html",
-		"prefix": "swiperfull",
-		"body": [
-			"<!-- Оболочка слайдера -->\n<div class=\"${1:имя-блока}__slider swiper\">\n\t<!-- Двигающееся часть слайдера -->\n\t<div class=\"${1:имя-блока}__wrapper swiper-wrapper\">\n\t\t<!-- Слайд -->\n\t\t<div class=\"${1:имя-блока}__slide swiper-slide\"></div>\n\t</div>\n\t<!-- Если нужна пагинация -->\n\t<div class=\"swiper-pagination\"></div>\n\t<!-- Если нужна навигация (влево/вправо) -->\n\t<button type=\"button\" class=\"swiper-button-prev\"></button>\n\t<button type=\"button\" class=\"swiper-button-next\"></button>\n\t<!-- Если нужен скролбар -->\n\t<div class=\"swiper-scrollbar\"></div>\n</div>"
+			"<div class=\"${1:имя блока}__slider\">\n\t<div class=\"${1:имя блока}__swiper\">\n\t\t<div class=\"${1:имя блока}__slide\"></div>\n\t</div>\n</div>"
 		],
 		"description": "Добавляет базовый HTML код слайдера Swiper"
 	},
@@ -118,7 +215,7 @@
 		"body": [
 			"@include adaptiveValue(\"${1:font-size}\", $2, $3);"
 		],
-		"description": "Адаптивное свойство (clamp): CSS-свойство, начальное значение, конечное значение, ширина начальная, ширина конечная"
+		"description": "Адаптивное свойство: CSS-свойство, начальное значение, конечное значение, ширина начальная, ширина конечная"
 	},
 	"EM": {
 		"scope": "scss",
@@ -180,22 +277,10 @@
 		"body": "height: rem($1);",
 		"description": "Добавляет height c переводом в REM"
 	},
-	"Margin bottom with REM": {
-		"scope": "scss",
-		"prefix": "mb",
-		"body": "margin-bottom: rem($1);",
-		"description": "Добавляет нижний отступ c переводом в REM"
-	},
-	"Margin top with REM": {
-		"scope": "scss",
-		"prefix": "mt",
-		"body": "margin-top: rem($1);",
-		"description": "Добавляет верхний отступ c переводом в REM"
-	},
 	"Margin bottom with EM": {
 		"scope": "scss",
 		"prefix": "mbe",
-		"body": "margin-bottom: em($1, $2);",
+		"body": "margin-bottom: math.div($1, $2) + em;",
 		"description": "Добавляет нижний отступ c переводом в EM"
 	},
 	"Margin Bottom not last-child": {
@@ -240,20 +325,20 @@
 		"body": "color: inherit;",
 		"description": "Наследовать цвет предка"
 	},
-	"Max width": {
+	"max-width: rem($1);": {
 		"scope": "scss",
 		"prefix": "mw",
 		"body": "max-width: rem($1);",
 		"description": "Максимальная ширина"
 	},
-	"@media max": {
+	"@media (max-width: em($1)){\n\t $2 \n}": {
 		"prefix": "md",
 		"body": [
 			"@media (max-width: em($1)){\n\t $2 \n}"
 		],
 		"description": "Добавляет медиазапрос max-width c переводом в EM"
 	},
-	"@media min": {
+	"@media (min-width:em($1)){\n\t $2 \n}": {
 		"prefix": "mmd",
 		"body": [
 			"@media (min-width:em($1)){\n\t $2 \n}"
@@ -308,168 +393,168 @@
 		],
 		"description": "z-index"
 	},
-	"fbpp": {
+	"flex: 0 0 percent($1, $2);": {
 		"prefix": "fbpp",
 		"body": [
 			"flex: 0 0 percent($1, $2);"
 		],
 		"description": "fbpp"
 	},
-	"pp": {
+	"padding: 0px 0px 0px 0px;": {
 		"prefix": "pp",
 		"body": [
 			"padding: 0px 0px 0px 0px;"
 		],
 		"description": "padding"
 	},
-	"ppp": {
+	"padding: 0px $1px;": {
 		"prefix": "ppp",
 		"body": [
 			"padding: 0px $1px;"
 		],
 		"description": "padding2"
 	},
-	"ppt": {
+	"padding: $1px 0px 0px 0px;": {
 		"prefix": "ppt",
 		"body": [
 			"padding: $1px 0px 0px 0px;"
 		],
 		"description": "padding top"
 	},
-	"ppb": {
+	"padding: 0px 0px $1px 0px;": {
 		"prefix": "ppb",
 		"body": [
 			"padding: 0px 0px $1px 0px;"
 		],
 		"description": "padding bottom"
 	},
-	"ppl": {
+	"padding: 0px 0px 0px $1px;": {
 		"prefix": "ppl",
 		"body": [
 			"padding: 0px 0px 0px $1px;"
 		],
 		"description": "padding left"
 	},
-	"ppr": {
+	"padding: 0px $1px 0px 0px;": {
 		"prefix": "ppr",
 		"body": [
 			"padding: 0px $1px 0px 0px;"
 		],
 		"description": "padding right"
 	},
-	"mm": {
+	"margin: 0px 0px 0px 0px;": {
 		"prefix": "mm",
 		"body": [
 			"margin: 0px 0px 0px 0px;"
 		],
 		"description": "margin"
 	},
-	"mr": {
+	"margin: 0px 0px 0px auto;": {
 		"prefix": "mr",
 		"body": [
 			"margin: 0px 0px 0px auto;"
 		],
 		"description": "margin"
 	},
-	"mmm": {
+	"margin: 0px $1px;": {
 		"prefix": "mmm",
 		"body": [
 			"margin: 0px $1px;"
 		],
 		"description": "margin2"
 	},
-	"mmt": {
+	"margin: $1px 0px 0px 0px;": {
 		"prefix": "mmt",
 		"body": [
 			"margin: $1px 0px 0px 0px;"
 		],
 		"description": "margin top"
 	},
-	"mmb": {
+	"margin: 0px 0px $1px 0px;": {
 		"prefix": "mmb",
 		"body": [
 			"margin: 0px 0px $1px 0px;"
 		],
 		"description": "margin bottom"
 	},
-	"mml": {
+	"margin: 0px 0px 0px $1px;": {
 		"prefix": "mml",
 		"body": [
 			"margin: 0px 0px 0px $1px;"
 		],
 		"description": "margin left"
 	},
-	"mmr": {
+	"margin: 0px $1px 0px 0px;": {
 		"prefix": "mmr",
 		"body": [
 			"margin: 0px $1px 0px 0px;"
 		],
 		"description": "margin right"
 	},
-	"mu": {
+	"margin: 0px auto;": {
 		"prefix": "mu",
 		"body": [
 			"margin: 0px auto;"
 		],
 		"description": "margin center"
 	},
-	"mc": {
+	"margin:auto;": {
 		"prefix": "mc",
 		"body": [
 			"margin:auto;"
 		],
 		"description": "margin center"
 	},
-	"mwn": {
+	"max-width: none;": {
 		"prefix": "mwn",
 		"body": [
 			"max-width: none;"
 		],
 		"description": "max-width none"
 	},
-	"ps": {
+	"position: absolute;width: 100%;height: 100%;top: 0;left: 0;": {
 		"prefix": "ps",
 		"body": [
 			"position: absolute;width: 100%;height: 100%;top: 0;left: 0;"
 		],
 		"description": "position absolute"
 	},
-	"art": {
+	"width: 0;height: 0;border-left: 50px solid transparent;border-right: 50px solid transparent;border-bottom: 100px solid red;": {
 		"prefix": "art",
 		"body": [
 			"width: 0;height: 0;border-left: 50px solid transparent;border-right: 50px solid transparent;border-bottom: 100px solid red;"
 		],
 		"description": "art"
 	},
-	"arb": {
+	"width: 0;height: 0;border-left: 50px solid transparent;border-right: 50px solid transparent;border-top: 100px solid red;": {
 		"prefix": "arb",
 		"body": [
 			"width: 0;height: 0;border-left: 50px solid transparent;border-right: 50px solid transparent;border-top: 100px solid red;"
 		],
 		"description": "arb"
 	},
-	"arl": {
+	"width: 0;height: 0;border-top: 50px solid transparent;border-right: 100px solid red;border-bottom: 50px solid transparent;": {
 		"prefix": "arl",
 		"body": [
 			"width: 0;height: 0;border-top: 50px solid transparent;border-right: 100px solid red;border-bottom: 50px solid transparent;"
 		],
 		"description": "arl"
 	},
-	"arr": {
+	"width: 0;height: 0;border-top: 50px solid transparent;border-left: 100px solid red;border-bottom: 50px solid transparent;": {
 		"prefix": "arr",
 		"body": [
 			"width: 0;height: 0;border-top: 50px solid transparent;border-left: 100px solid red;border-bottom: 50px solid transparent;"
 		],
 		"description": "arr"
 	},
-	"drt": {
+	"direction: rtl;": {
 		"prefix": "drt",
 		"body": [
 			"direction: rtl;"
 		],
 		"description": "drt"
 	},
-	"br5": {
+	"border-radius: 50%;": {
 		"scope": "css,scss",
 		"prefix": "br5",
 		"body": [
@@ -477,28 +562,28 @@
 		],
 		"description": "br5"
 	},
-	"bs": {
+	"box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);": {
 		"prefix": "bs",
 		"body": [
 			"box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);"
 		],
 		"description": "bs"
 	},
-	"c0": {
+	"color:#000;": {
 		"prefix": "c0",
 		"body": [
 			"color:#000;"
 		],
 		"description": "c0"
 	},
-	"wa": {
+	"width: auto;": {
 		"prefix": "wa",
 		"body": [
 			"width: auto;"
 		],
 		"description": "wa"
 	},
-	"ha": {
+	"height: auto;": {
 		"prefix": "ha",
 		"body": [
 			"height: auto;"
@@ -506,97 +591,98 @@
 		"description": "ha"
 	},
 	"color": {
+		"scope": "css,scss,sass",
 		"prefix": "c",
 		"body": [
 			"color: #${1:fff};"
 		],
 		"description": "color"
 	},
-	"c1": {
+	"color: #fff;": {
 		"prefix": "c1",
 		"body": [
 			"color: #fff;"
 		],
 		"description": "c1"
 	},
-	"an": {
+	"animation:${1:name} 1s infinite linear;": {
 		"prefix": "an",
 		"body": [
 			"animation:${1:name} 1s infinite linear;"
 		],
 		"description": "aa"
 	},
-	"aa": {
+	"transition: all 0.${1:3}s ease 0s;$2": {
 		"prefix": "aa",
 		"body": [
 			"transition: all 0.${1:3}s ease 0s;$2"
 		],
 		"description": "aa"
 	},
-	"ar": {
+	"transform: rotate(-${1:180}deg);": {
 		"prefix": "ar",
 		"body": [
 			"transform: rotate(-${1:180}deg);"
 		],
 		"description": "ar"
 	},
-	"as": {
+	"transform: scale(${1:1});": {
 		"prefix": "as",
 		"body": [
 			"transform: scale(${1:1});"
 		],
 		"description": "as"
 	},
-	"at": {
+	"transform: translate(${1:0}px,${2:0}px);$3": {
 		"prefix": "at",
 		"body": [
 			"transform: translate(${1:0}px,${2:0}px);$3"
 		],
 		"description": "at"
 	},
-	"att": {
+	"transform: translate(0px,0px) rotate(0deg) scale(1) skew(0,0);": {
 		"prefix": "att",
 		"body": [
 			"transform: translate(0px,0px) rotate(0deg) scale(1) skew(0,0);"
 		],
 		"description": "at"
 	},
-	"ex": {
+	"@extend %${1:};": {
 		"prefix": "ex",
 		"body": [
 			"@extend %${1:};"
 		],
 		"description": "ex"
 	},
-	"ic": {
+	"@extend %ic;": {
 		"prefix": "ic",
 		"body": [
 			"@extend %ic;"
 		],
 		"description": "ic"
 	},
-	"is": {
+	"img{max-width: 100%;}": {
 		"prefix": "is",
 		"body": [
 			"img{max-width: 100%;}"
 		],
 		"description": "is"
 	},
-	"lc": {
+	"&:last-child{\n\t$0\n}": {
 		"prefix": "lc",
 		"body": [
 			"&:last-child{\n\t$0\n}"
 		],
 		"description": "lc"
 	},
-	"fc": {
+	"&:first-child{\n\t$0\n}": {
 		"prefix": "fc",
 		"body": [
 			"&:first-child{\n\t$0\n}"
 		],
 		"description": "fc"
 	},
-	"nc": {
+	"&:nth-child($0){}": {
 		"prefix": "nc",
 		"body": [
 			"&:nth-child($0){}"
@@ -624,28 +710,28 @@
 		],
 		"description": "before"
 	},
-	"hv": {
+	"&:hover{\n\t$0\n}": {
 		"prefix": "hv",
 		"body": [
 			"&:hover{\n\t$0\n}"
 		],
 		"description": "hv"
 	},
-	"hhv": {
+	"@media (any-hover: hover)": {
 		"prefix": "hhv",
 		"body": [
 			"@media (any-hover: hover){\n\t&:hover{\n\t\t$0\n\t}\n}"
 		],
 		"description": "hhv"
 	},
-	"acc": {
+	"&:active{\n\t$0\n}": {
 		"prefix": "acc",
 		"body": [
 			"&:active{\n\t$0\n}"
 		],
 		"description": "acc"
 	},
-	"ac_css": {
+	"&._active{\n\t$0\n}": {
 		"scope": "scss,css",
 		"prefix": "ac",
 		"body": [
@@ -653,7 +739,7 @@
 		],
 		"description": "ac_css"
 	},
-	"ac_html": {
+	"_active": {
 		"scope": "html,kit,javascript",
 		"prefix": "ac",
 		"body": [
@@ -661,182 +747,182 @@
 		],
 		"description": "ac_html"
 	},
-	"bg+": {
+	"background: url('@img$0') 0 0 no-repeat;+": {
 		"prefix": "bg+",
 		"body": [
 			"background: url('@img$0') 0 0 no-repeat;"
 		],
 		"description": "bg+"
 	},
-	"md1": {
+	"@media (max-width:\\$pc)": {
 		"prefix": "md1",
 		"body": [
 			"@media (max-width:\\$pc){\n\t $0 \n}"
 		],
 		"description": "md1"
 	},
-	"mmd1": {
+	"@media (min-width:\\$pc)": {
 		"prefix": "mmd1",
 		"body": [
 			"@media (min-width:\\$pc){\n\t $0 \n}"
 		],
 		"description": "md1"
 	},
-	"md2": {
+	"@media (max-width:\\$tablet)": {
 		"prefix": "md2",
 		"body": [
 			"@media (max-width:\\$tablet){\n\t$0\n}"
 		],
 		"description": "md2"
 	},
-	"mmd2": {
+	"@media (min-width:\\$tablet)": {
 		"prefix": "mmd2",
 		"body": [
 			"@media (min-width:\\$tablet){\n\t $0 \n}"
 		],
 		"description": "md1"
 	},
-	"md3": {
+	"@media (max-width:$mobile)": {
 		"prefix": "md3",
 		"body": [
 			"@media (max-width:\\$mobile){\n\t $0 \n}"
 		],
 		"description": "md3"
 	},
-	"mmd3": {
+	"@media (min-width:$mobile)": {
 		"prefix": "mmd3",
 		"body": [
 			"@media (min-width:\\$mobile){\n\t $0 \n}"
 		],
 		"description": "md1"
 	},
-	"md4": {
+	"@media (max-width:$mobileSmall)": {
 		"prefix": "md4",
 		"body": [
 			"@media (max-width:\\$mobileSmall){\n\t $0 \n}"
 		],
 		"description": "md4"
 	},
-	"mmd4": {
+	"@media (min-width:$mobileSmall)": {
 		"prefix": "mmd4",
 		"body": [
 			"@media (min-width:\\$mobileSmall){\n\t $0 \n}"
 		],
 		"description": "md1"
 	},
-	"fb": {
+	"display: flex;": {
 		"prefix": "fb",
 		"body": [
 			"display: flex;"
 		],
 		"description": "fb"
 	},
-	"fbi": {
+	"display: inline-flex;": {
 		"prefix": "fbi",
 		"body": [
 			"display: inline-flex;"
 		],
 		"description": "fbi"
 	},
-	"fbo": {
+	"order:": {
 		"prefix": "fbo",
 		"body": [
 			"order:${1:1};"
 		],
 		"description": "fbo"
 	},
-	"fbs": {
+	"justify-content:space-between": {
 		"prefix": "fbs",
 		"body": [
 			"justify-content:${1:space-between};"
 		],
 		"description": "fbs"
 	},
-	"fbai": {
+	"align-items:center": {
 		"prefix": "fbai",
 		"body": [
 			"align-items:${1:center};"
 		],
-		"description": "fbai"
+		"description": "align-items:center"
 	},
-	"fbw": {
+	"flex-wrap: wrap;": {
 		"prefix": "fbw",
 		"body": [
 			"flex-wrap: wrap;"
 		],
 		"description": "fbw"
 	},
-	"fbd": {
+	"flex-direction: column;": {
 		"prefix": "fbd",
 		"body": [
 			"flex-direction: column;"
 		],
 		"description": "fbd"
 	},
-	"fbg": {
+	"flex: 1 1 100%;": {
 		"prefix": "fbg",
 		"body": [
 			"flex: 1 1 100%;"
 		],
 		"description": "fbg"
 	},
-	"fbga": {
+	"flex: 1 1 auto;": {
 		"prefix": "fbga",
 		"body": [
 			"flex: 1 1 auto;"
 		],
 		"description": "fbga"
 	},
-	"fbgh": {
+	"flex: 0 1 50%;": {
 		"prefix": "fbgh",
 		"body": [
 			"flex: 0 1 50%;"
 		],
 		"description": "fbgh"
 	},
-	"fbgt": {
+	"flex: 0 1 33.333%;": {
 		"prefix": "fbgt",
 		"body": [
 			"flex: 0 1 33.333%;"
 		],
 		"description": "fbgt"
 	},
-	"fbgq": {
+	"flex: 0 1 25%;": {
 		"prefix": "fbgq",
 		"body": [
 			"flex: 0 1 25%;"
 		],
 		"description": "fbgq"
 	},
-	"fbp": {
+	"flex: 0 0 1px;": {
 		"prefix": "fbp",
 		"body": [
 			"flex: 0 0 $1px;"
 		],
 		"description": "fbp"
 	},
-	"fbc": {
+	"justify-content:center;align-items: center;": {
 		"prefix": "fbc",
 		"body": [
 			"justify-content:center;align-items: center;"
 		],
-		"description": "fbc"
+		"description": "justify-content:center;align-items: center;"
 	},
-	"lcm": {
+	"&:last-child{margin:0px 0px 0px 0px;}": {
 		"prefix": "lcm",
 		"body": [
 			"&:last-child{margin:0px 0px 0px 0px;}"
 		],
 		"description": "lcm"
 	},
-	"hvu": {
+	"&:hover{text-decoration: underline;}": {
 		"prefix": "hvu",
 		"body": [
 			"&:hover{text-decoration: underline;}"
 		],
 		"description": "hvu"
 	},
-	"hvn": {
+	"&:hover{text-decoration: none;}hvn": {
 		"prefix": "hvn",
 		"body": [
 			"&:hover{text-decoration: none;}"
@@ -914,13 +1000,8 @@
 	},
 	"Image": {
 		"prefix": "img",
-		"body": "<img src=\"@img$0\" alt=\"\">",
-		"description": "img"
-	},
-	"Image Lazy": {
-		"prefix": "imgl",
 		"body": "<img data-src=\"@img$0\" alt=\"\">",
-		"description": "img lazy load"
+		"description": "img"
 	},
 	/*
 	"Image": {
@@ -969,4 +1050,18 @@
 		"body": "background-color: #7A956B;",
 		"description": "bc3"
 	},
+	"VueJs Props": {
+		"prefix": "pro",
+		"body": [
+			"props: [${1:}],"
+		],
+		"description": "VueJs Props"
+	},
+	"VueJs Emmit": {
+		"prefix": "emi",
+		"body": [
+			"$emit('${1:}')"
+		],
+		"description": "VueJs Emmit"
+	}
 }
